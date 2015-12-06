@@ -35,8 +35,8 @@ object AccountingBuild extends Build {
     val slickDriver = "slick.driver.PostgresDriver"
     val pkg = "demo"
     toError(r.run("slick.codegen.SourceCodeGenerator", cp.files, Array(slickDriver, jdbcDriver, url, outputDir, pkg), s.log))
-    val fname = outputDir + "/demo/Tables.scala"
-    Seq(file(fname))
+    val filename = outputDir + "/demo/Tables.scala"
+    Seq(file(filename))
   }
   val slickVersion = "3.1.0"
 }

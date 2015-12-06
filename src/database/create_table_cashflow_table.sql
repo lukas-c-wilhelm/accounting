@@ -1,0 +1,9 @@
+BEGIN
+CREATE TABLE data.cashflow (
+  c_id BIGSERIAL PRIMARY KEY,
+  c_number BIGINT UNIQUE NOT NULL,
+  c_date DATE NOT NULL,
+  c_value DECIMAL(16,6) NOT NULL,
+  c_purpose VARCHAR NOT NULL
+)
+;
