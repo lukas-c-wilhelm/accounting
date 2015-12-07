@@ -1,0 +1,9 @@
+{
+  "accountingdb": {
+    "url": "jdbc:postgresql://localhost:5432/accounting",
+    "driver": "org.postgresql.Driver",
+    "connectionPool": "disabled",
+    "keepAliveConnection": true,
+    "timeout": 10
+  }
+}

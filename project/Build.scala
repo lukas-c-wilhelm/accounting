@@ -22,20 +22,23 @@ object AccountingBuild extends Build {
         "org.scalatest" %% "scalatest" % "2.2.4" % "test",
         "org.scala-lang" % "scala-reflect" % "2.11.7",
         "org.scala-lang.modules" %% "scala-xml" % "1.0.4",
-        "org.postgresql" % "postgresql" % "9.4-1206-jdbc42"
-      )
+        "org.postgresql" % "postgresql" % "9.4-1206-jdbc42",
+        "com.typesafe" % "config" % "1.3.0"
+      ),
+      slick <<= slickCodeGenTask // register manual sbt command
+      // sourceGenerators in Compile <+= slickCodeGenTask // register automatic code generation on every compile, remove for only manual use
     )
   )
   // code generation task
   lazy val slick = TaskKey[Seq[File]]("gen-tables")
-  lazy val slickCodeGenTask = (sourceManaged, dependencyClasspath in Compile, runner in Compile, streams) map { (dir, cp, r, s) =>
-    val outputDir = (dir / "slick").getPath // place generated files in sbt's managed sources folder
+  lazy val slickCodeGenTask = (baseDirectory, dependencyClasspath in Compile, runner in Compile, streams) map { (dir, cp, r, s) =>
+    val outputDir = (dir / "src/main/scala-2.11").getPath // place generated files in sbt's managed sources folder
   val url = "jdbc:postgresql://localhost:5432/accounting?user=postgres&password=postgres"
     val jdbcDriver = "org.postgresql.Driver"
     val slickDriver = "slick.driver.PostgresDriver"
-    val pkg = "demo"
+    val pkg = "wilhelm.accounting.persistence"
     toError(r.run("slick.codegen.SourceCodeGenerator", cp.files, Array(slickDriver, jdbcDriver, url, outputDir, pkg), s.log))
-    val filename = outputDir + "/demo/Tables.scala"
+    val filename = outputDir + "/wilhelm/accounting/persistence/Tables.scala"
     Seq(file(filename))
   }
   val slickVersion = "3.1.0"
